@@ -6,9 +6,9 @@
   <title>Toko Digital — Top Up Instan (QRIS & eWallet) + Struk</title>
   <style>
     :root{
-      --primary:#1e3a8a;
-      --accent:#f97316;
-      --bg:#f8fafc;
+      --primary:#1e3a8a; /* biru */
+      --accent:#f97316;  /* oranye */
+      --bg:#f8fafc;      /* slate-50 */
       --card:#ffffff;
       --muted:#64748b;
       --success:#16a34a;
@@ -60,7 +60,408 @@
   </style>
 </head>
 <body>
-  <!-- truncated for brevity -->
-  <p style="text-align:center;color:#888">Kode full sesuai jawaban sebelumnya. Karena panjang, sudah ditulis di jawaban sebelum ini.</p>
+  <div class="container">
+    <header class="nav">
+      <div class="brand"><div class="dot"></div> Toko Digital</div>
+      <div class="badges">
+        <div class="badge">QRIS</div><div class="badge">Dana</div><div class="badge">OVO</div>
+        <div class="badge">GoPay</div><div class="badge">ShopeePay</div><div class="badge">LinkAja</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <h1 style="margin:0 0 8px;font-size:34px">Top Up Digital & Streaming Instan 🚀</h1>
+        <p class="muted" style="margin:0 0 16px">Pulsa, paket data, top up game, dan langganan Netflix/Spotify aktif cepat. Bayar mudah via <b>QRIS</b> atau <b>e-wallet</b>.</p>
+        <div class="badges" style="margin:10px 0 18px">
+          <div class="badge">Instan</div><div class="badge">Harga Terjangkau</div><div class="badge">Aman Terpercaya</div>
+        </div>
+        <button class="btn" onclick="document.getElementById('orderCard').scrollIntoView({behavior:'smooth'})">Pesan Sekarang</button>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 12px">Metode Pembayaran</h3>
+        <div class="pay-logos">
+          <span class="pill">QRIS</span><span class="pill">Dana</span><span class="pill">OVO</span>
+          <span class="pill">GoPay</span><span class="pill">ShopeePay</span><span class="pill">LinkAja</span>
+        </div>
+        <div style="height:12px"></div>
+        <div class="qrbox">
+          <!-- Ganti gambar ini dengan QRIS milikmu -->
+          <svg width="140" height="140" viewBox="0 0 120 120" role="img" aria-label="Placeholder QR">
+            <rect x="0" y="0" width="120" height="120" fill="#f1f5f9" stroke="#94a3b8"/>
+            <rect x="10" y="10" width="30" height="30" fill="#0f172a"/>
+            <rect x="80" y="10" width="30" height="30" fill="#0f172a"/>
+            <rect x="10" y="80" width="30" height="30" fill="#0f172a"/>
+            <rect x="48" y="48" width="24" height="24" fill="#0f172a"/>
+          </svg>
+          <p class="note">Ganti placeholder ini dengan gambar QRIS kamu.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Katalog produk dinamis -->
+    <section class="card" style="margin-top:18px">
+      <h2 class="section-title">Produk Terpopuler</h2>
+      <div id="productsGrid" class="grid products"></div>
+    </section>
+
+    <!-- Form Order -->
+    <section id="orderCard" class="card" style="margin-top:18px">
+      <h2 class="section-title">Formulir Pemesanan</h2>
+      <div class="grid row">
+        <div class="input"><label>Nama Lengkap</label><input id="custName" placeholder="Nama Anda" /></div>
+        <div class="input"><label>Kontak (WhatsApp / Email)</label><input id="custContact" placeholder="0812xxxx / email@contoh.com" /></div>
+      </div>
+      <div class="grid row">
+        <div class="input"><label>Produk</label><input id="productName" placeholder="Pilih dari daftar atau ketik manual" /></div>
+        <div class="input"><label>Harga (Rp)</label><input id="productPrice" type="number" placeholder="0" /></div>
+      </div>
+      <div class="grid row">
+        <div class="input">
+          <label>Metode Pembayaran</label>
+          <select id="payMethod">
+            <option value="QRIS">QRIS</option><option value="Dana">Dana</option><option value="OVO">OVO</option>
+            <option value="GoPay">GoPay</option><option value="ShopeePay">ShopeePay</option><option value="LinkAja">LinkAja</option>
+          </select>
+        </div>
+        <div class="input"><label>Catatan Tambahan</label><input id="note" placeholder="ID game, nomor tujuan, dsb." /></div>
+      </div>
+      <div class="grid">
+        <div class="card" style="background:#f8fafc;border-style:dashed">
+          <b>Instruksi Pembayaran:</b>
+          <ol class="muted">
+            <li>Jika <b>QRIS</b>, scan kode QR di bagian atas.</li>
+            <li>Jika e-wallet, kirim ke: <b>08xx-xxxx-xxxx a.n. Nama Kamu</b> (ganti sesuai akunmu).</li>
+            <li>Setelah membayar, tekan <b>Buat Pesanan & Struk</b>. Owner akan memproses menjadi <b>Selesai</b>.</li>
+          </ol>
+          <span class="note">Catatan: ganti nomor e-wallet & gambar QRIS dengan milikmu.</span>
+        </div>
+      </div>
+      <div class="flex right" style="margin-top:10px">
+        <button class="btn" onclick="createOrder()">Buat Pesanan & Struk</button>
+      </div>
+    </section>
+
+    <!-- Cek Status -->
+    <section class="card" style="margin-top:18px">
+      <h2 class="section-title">Cek Status Pesanan</h2>
+      <div class="grid row">
+        <div class="input"><label>Nomor Pesanan</label><input id="lookupOrderId" placeholder="contoh: ORD-20250101-123" /></div>
+        <div class="input"><label>Kontak (WA/Email)</label><input id="lookupContact" placeholder="Masukkan kontak yang digunakan saat pesan" /></div>
+      </div>
+      <div class="flex right" style="margin:10px 0 14px">
+        <button class="btn secondary" onclick="lookupOrder()">Lihat Struk</button>
+      </div>
+      <div id="receipt" class="card hidden"></div>
+    </section>
+
+    <!-- Admin -->
+    <section class="card" style="margin-top:18px">
+      <div class="flex" style="justify-content:space-between;align-items:center">
+        <h2 class="section-title">Panel Owner (Admin)</h2>
+        <div class="flex">
+          <input id="adminPass" type="password" placeholder="Password admin" style="padding:10px;border-radius:12px;border:1px solid #cbd5e1" />
+          <button class="btn small" onclick="adminLogin()">Login</button>
+        </div>
+      </div>
+
+      <div id="adminArea" class="hidden">
+        <div class="flex right" style="margin:6px 0 12px">
+          <button class="btn ghost small" onclick="exportCSV()">Export CSV</button>
+          <button class="btn ghost small" onclick="clearAll()">Hapus Semua (Local)</button>
+        </div>
+
+        <!-- Tambah Produk -->
+        <div id="addProductPanel" class="card" style="margin:10px 0">
+          <h3 style="margin-top:0">Tambah Produk</h3>
+          <div class="grid row">
+            <div class="input"><label>Nama Produk</label><input id="addProdName" placeholder="contoh: Pulsa Telkomsel 50K" /></div>
+            <div class="input"><label>Harga (Rp)</label><input id="addProdPrice" type="number" placeholder="50000" /></div>
+          </div>
+          <div class="input" style="margin-top:8px"><label>Deskripsi</label><input id="addProdDesc" placeholder="contoh: Pulsa reguler" /></div>
+          <div class="flex right" style="margin-top:10px"><button class="btn small" onclick="addProduct()">Tambah ke Katalog</button></div>
+
+          <h4 style="margin:16px 0 8px">Katalog (Edit Cepat)</h4>
+          <table class="table" id="productsTable">
+            <thead><tr><th>Nama</th><th>Harga</th><th>Deskripsi</th><th>Aksi</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Table Orders -->
+        <table class="table" id="ordersTable">
+          <thead><tr><th>Order ID</th><th>Nama</th><th>Kontak</th><th>Produk</th><th>Harga</th><th>Metode</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody></tbody>
+        </table>
+
+        <div id="editor" class="card hidden" style="margin-top:14px">
+          <h3 style="margin-top:0">Edit Pesanan</h3>
+          <div class="grid row">
+            <div class="input"><label>Status</label>
+              <select id="editStatus"><option value="Pending">Pending</option><option value="Selesai">Selesai</option><option value="Gagal">Gagal</option></select>
+            </div>
+            <div class="input"><label>Nomor Resi / SN (opsional)</label><input id="editSN" placeholder="SN / No. Resi / Kode" /></div>
+          </div>
+          <div class="input"><label>Hasil Pesanan (disimpan di struk)</label>
+            <textarea id="editResult" placeholder="Contoh: Email: xxx@xxx.com | Password: ******, atau Kode Voucher: ABCD-1234"></textarea>
+          </div>
+          <div class="flex right"><button class="btn small" onclick="saveEdit()">Simpan Perubahan</button></div>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:10px">Keamanan dasar: panel ini memakai password hard-coded untuk demo. Ganti pada variabel <code>ADMIN_PASSWORD</code> di skrip.</p>
+    </section>
+
+    <footer class="footer">
+      <div class="flex" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>©️ <span id="year"></span> Toko Digital. All rights reserved.</span>
+        <span>Powered by <b>Benitha</b> • WhatsApp: 08xx-xxxx-xxxx • IG: @b.nithaaa</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+  // ====== KONFIGURASI DASAR ======
+  const ADMIN_PASSWORD = 'owner123'; // GANTI segera!
+
+  // ====== DATA PESANAN (LocalStorage) ======
+  const STORE_KEY = 'orders.v1';
+  let orders = loadOrders();
+  let selectedOrderId = null;
+
+  function loadOrders(){
+    try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }catch(e){ return []; }
+  }
+  function saveOrders(){ localStorage.setItem(STORE_KEY, JSON.stringify(orders)); renderOrders(); }
+
+  function genId(){
+    const d = new Date(), pad = n=>String(n).padStart(2,'0');
+    return `ORD-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}-${Math.floor(Math.random()*900+100)}`;
+  }
+
+  function prefillProduct(name, price){
+    document.getElementById('productName').value = name;
+    document.getElementById('productPrice').value = price;
+    document.getElementById('orderCard').scrollIntoView({behavior:'smooth'});
+  }
+
+  function createOrder(){
+    const name = document.getElementById('custName').value.trim();
+    const contact = document.getElementById('custContact').value.trim();
+    const product = document.getElementById('productName').value.trim();
+    const price = parseInt(document.getElementById('productPrice').value || '0',10);
+    const method = document.getElementById('payMethod').value;
+    const note = document.getElementById('note').value.trim();
+
+    if(!name || !contact || !product || !price){
+      alert('Lengkapi nama, kontak, produk, dan harga.');
+      return;
+    }
+
+    const id = genId();
+    const order = { id, name, contact, product, price, method, note, status:'Pending', createdAt: new Date().toISOString(), result:'', sn:'' };
+    orders.unshift(order);
+    saveOrders();
+    window.scrollTo({top:0,behavior:'smooth'});
+    renderReceipt(order);
+  }
+
+  function lookupOrder(){
+    const id = document.getElementById('lookupOrderId').value.trim();
+    const contact = document.getElementById('lookupContact').value.trim().toLowerCase();
+    if(!id || !contact){ alert('Masukkan Nomor Pesanan dan Kontak.'); return; }
+    const order = orders.find(o => o.id === id && o.contact.toLowerCase() === contact);
+    if(!order){ alert('Pesanan tidak ditemukan. Pastikan Nomor Pesanan & Kontak benar.'); return; }
+    renderReceipt(order);
+  }
+
+  function renderReceipt(order){
+    const el = document.getElementById('receipt');
+    const statusClass = order.status==='Selesai' ? 'done' : (order.status==='Gagal'?'failed':'pending');
+    const resultBlock = order.status==='Selesai'
+      ? `<tr><td><b>Hasil Pesanan</b></td><td><pre style="white-space:pre-wrap;margin:0">${escapeHtml(order.result||'-')}</pre></td></tr>`
+      : `<tr><td><b>Hasil Pesanan</b></td><td class="muted">(Akan muncul setelah owner menyelesaikan pesanan)</td></tr>`;
+
+    el.classList.remove('hidden');
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <h3 style="margin:0">Struk Pembelian</h3>
+        <span class="status ${statusClass}">Status: ${order.status}</span>
+      </div>
+      <table class="table" style="margin-top:8px">
+        <tr><td><b>Nomor Pesanan</b></td><td>${order.id}</td></tr>
+        <tr><td><b>Tanggal</b></td><td>${fmtDate(order.createdAt)}</td></tr>
+        <tr><td><b>Nama</b></td><td>${escapeHtml(order.name)}</td></tr>
+        <tr><td><b>Kontak</b></td><td>${escapeHtml(order.contact)}</td></tr>
+        <tr><td><b>Produk</b></td><td>${escapeHtml(order.product)}</td></tr>
+        <tr><td><b>Harga</b></td><td>Rp ${order.price.toLocaleString('id-ID')}</td></tr>
+        <tr><td><b>Metode</b></td><td>${escapeHtml(order.method)}</td></tr>
+        <tr><td><b>Catatan</b></td><td>${escapeHtml(order.note||'-')}</td></tr>
+        <tr><td><b>SN/Resi</b></td><td>${escapeHtml(order.sn||'-')}</td></tr>
+        ${resultBlock}
+      </table>
+      <div class="note">Simpan Nomor Pesanan untuk cek status. Jika ada kendala, hubungi admin melalui WhatsApp.</div>
+    `;
+  }
+
+  function fmtDate(iso){ const d = new Date(iso); return d.toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}); }
+
+  function adminLogin(){
+    const pass = document.getElementById('adminPass').value;
+    if(pass !== ADMIN_PASSWORD){ alert('Password salah.'); return; }
+    document.getElementById('adminArea').classList.remove('hidden');
+    renderOrders();
+    renderProductsTable(); // tampilkan katalog di tabel admin
+  }
+
+  function renderOrders(){
+    const tbody = document.querySelector('#ordersTable tbody');
+    tbody.innerHTML = orders.map(o => `
+      <tr>
+        <td>${o.id}</td>
+        <td>${escapeHtml(o.name)}</td>
+        <td>${escapeHtml(o.contact)}</td>
+        <td>${escapeHtml(o.product)}</td>
+        <td>Rp ${o.price.toLocaleString('id-ID')}</td>
+        <td>${escapeHtml(o.method)}</td>
+        <td>${o.status}</td>
+        <td><button class="btn small" onclick="openEditor('${o.id}')">Edit</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function openEditor(id){
+    const o = orders.find(x=>x.id===id);
+    if(!o) return;
+    selectedOrderId = id;
+    document.getElementById('editor').classList.remove('hidden');
+    document.getElementById('editStatus').value = o.status;
+    document.getElementById('editResult').value = o.result||'';
+    document.getElementById('editSN').value = o.sn||'';
+    document.getElementById('editor').scrollIntoView({behavior:'smooth'});
+  }
+
+  function saveEdit(){
+    if(!selectedOrderId) return;
+    const idx = orders.findIndex(x=>x.id===selectedOrderId);
+    if(idx<0) return;
+    orders[idx].status = document.getElementById('editStatus').value;
+    orders[idx].result = document.getElementById('editResult').value.trim();
+    orders[idx].sn = document.getElementById('editSN').value.trim();
+    saveOrders();
+    alert('Perubahan tersimpan.');
+  }
+
+  function exportCSV(){
+    const header = ['id','createdAt','name','contact','product','price','method','note','status','sn','result'];
+    const rows = orders.map(o=> header.map(h=> JSON.stringify(String((o[h]??'')).replaceAll('\\n',' '))).join(','));
+    const csv = header.join(',') + '\\n' + rows.join('\\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'orders.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function clearAll(){
+    if(!confirm('Hapus semua data pesanan di perangkat ini?')) return;
+    orders = []; saveOrders();
+    document.getElementById('receipt').classList.add('hidden');
+  }
+
+  // ====== KATALOG PRODUK (LocalStorage) ======
+  const PRODUCTS_KEY = 'products.v1';
+  let products = loadProducts();
+
+  function loadProducts(){
+    try {
+      const data = JSON.parse(localStorage.getItem(PRODUCTS_KEY));
+      if (Array.isArray(data) && data.length) return data;
+    } catch(e) {}
+    // seed default
+    const seed = [
+      { id: pid(), name: 'Pulsa Telkomsel 50K', price: 50000, desc: 'Pulsa reguler' },
+      { id: pid(), name: 'Data 10GB (30 Hari)', price: 45000, desc: 'Semua jaringan' },
+      { id: pid(), name: 'Top Up ML 344 Diamonds', price: 90000, desc: 'Via ID & Server' },
+      { id: pid(), name: 'Netflix Premium 1 Bulan', price: 55000, desc: 'Akun Sharing/Pribadi' }
+    ];
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(seed));
+    return seed;
+  }
+
+  function saveProducts(){
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+    renderProducts();
+    renderProductsTable();
+  }
+
+  function pid(){ return 'PRD-' + Math.random().toString(36).slice(2,8).toUpperCase(); }
+
+  function renderProducts(){
+    const grid = document.getElementById('productsGrid');
+    if(!grid) return;
+    grid.innerHTML = products.map(p => `
+      <div class="card product">
+        <h4>${escapeHtml(p.name)}</h4>
+        <div class="muted">${escapeHtml(p.desc || '')}</div>
+        <div class="price">Rp ${Number(p.price||0).toLocaleString('id-ID')}</div>
+        <button class="btn small" onclick="prefillProduct('${escapeAttr(p.name)}', ${Number(p.price||0)})">Beli via QRIS/eWallet</button>
+      </div>
+    `).join('');
+  }
+
+  function renderProductsTable(){
+    const tbody = document.querySelector('#productsTable tbody');
+    if(!tbody) return;
+    tbody.innerHTML = products.map(p => `
+      <tr>
+        <td>${escapeHtml(p.name)}</td>
+        <td>Rp ${Number(p.price||0).toLocaleString('id-ID')}</td>
+        <td>${escapeHtml(p.desc||'')}</td>
+        <td><button class="btn small ghost" onclick="deleteProduct('${p.id}')">Hapus</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function addProduct(){
+    const name = document.getElementById('addProdName').value.trim();
+    const price = parseInt(document.getElementById('addProdPrice').value||'0',10);
+    const desc = document.getElementById('addProdDesc').value.trim();
+    if(!name || !price){ alert('Nama dan harga wajib diisi.'); return; }
+    products.unshift({ id: pid(), name, price, desc });
+    document.getElementById('addProdName').value='';
+    document.getElementById('addProdPrice').value='';
+    document.getElementById('addProdDesc').value='';
+    saveProducts();
+  }
+
+  function deleteProduct(id){
+    if(!confirm('Hapus produk ini dari katalog?')) return;
+    products = products.filter(p => p.id !== id);
+    saveProducts();
+  }
+
+  // ====== UTIL ======
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll(/&/g,'&amp;')
+      .replaceAll(/</g,'&lt;')
+      .replaceAll(/>/g,'&gt;')
+      .replaceAll(/"/g,'&quot;')
+      .replaceAll(/'/g,'&#39;');
+  }
+  function escapeAttr(s){
+    return String(s)
+      .replaceAll(/&/g,'&amp;')
+      .replaceAll(/"/g,'&quot;')
+      .replaceAll(/'/g,'&#39;')
+      .replaceAll(/</g,'&lt;')
+      .replaceAll(/>/g,'&gt;');
+  }
+
+  // ====== INIT ======
+  document.getElementById('year').textContent = new Date().getFullYear();
+  renderOrders();
+  renderProducts();
+  </script>
 </body>
 </html>
